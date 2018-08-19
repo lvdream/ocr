@@ -1,0 +1,80 @@
+common:
+  ocr:
+    baidu:
+      error:
+        - name: SDK100
+          value: image size error
+        - name: SDK101
+          value: image length error
+        - name: SDK102
+          value: read image file error
+        - name: SDK108
+          value: connection or read data time out
+        - name: SDK109
+          value: unsupported image format
+        - name: 4
+          value: Open api request limit reached
+        - name: 14
+          value: IAM Certification failed
+        - name: 17
+          value: Open api daily request limit reached
+        - name: 18
+          value: Open api qps request limit reached
+        - name: 19
+          value: Open api total request limit reached
+        - name: 100
+          value: Invalid parameter
+        - name: 110
+          value: Access token invalid or no longer valid
+        - name: 111
+          value: Access token expired
+        - name: 282000
+          value: internal error
+        - name: 216100
+          value: invalid param
+        - name: 216101
+          value: not enough param
+        - name: 216102
+          value: service not support
+        - name: 216103
+          value: param too long
+        - name: 216110
+          value: appid not exist
+        - name: 216200
+          value: empty image
+        - name: 216201
+          value: image format error
+        - name: 216202
+          value: image size error
+        - name: 216630
+          value: recognize error
+        - name: 216631
+          value: recognize bank card error
+        - name: 216633
+          value: recognize idcard error
+        - name: 216634
+          value: detect error
+        - name: 282003
+          value: missing parameters
+        - name: 282005
+          value: batch processing error
+        - name: 282006
+          value: batch task limit reached
+        - name: 282110
+          value: urls not exit
+        - name: 282111
+          value: url format illegal
+        - name: 282112
+          value: url download timeout
+        - name: 282113
+          value: url response invalid
+        - name: 282114
+          value: url size error
+        - name: 282005
+          value: batch processing error
+        - name: 282808
+          value: request id
+        - name: 282809
+          value: result type error
+        - name: 282810
+          value: image recognize error

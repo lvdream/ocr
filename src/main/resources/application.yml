@@ -11,6 +11,8 @@ common:
     file:
       path: /tmp/orc/upload/
       keep: 1
+      outsheet: 识别结果
+      keepsheet: body
 spring:
   profiles:
     active: msg

@@ -32,7 +32,7 @@ public class DownloadFileUtil {
                 savePath.mkdir();
             }
             // 创建保存的文件
-            File file = new File(savePath + File.pathSeparator + saveFileName);
+            File file = new File(savePath + File.separator + saveFileName);
             if (file != null && !file.exists()) {
                 file.createNewFile();
             }

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 public class OrcFileCfg {
     private String path;
     private String keep;
+    private String outsheet;
+    private String keepsheet;
 
     @Override
     public String toString() {

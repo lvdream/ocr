@@ -1,19 +1,28 @@
 package saul.orc.app.orc.image;
 
+import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.fastjson.JSON;
 import com.baidu.aip.ocr.AipOcr;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.util.Strings;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import saul.orc.app.orc.entity.ReturnImg;
+import saul.orc.app.orc.config.OrcFileCfg;
 import saul.orc.app.orc.config.OrcPropertiesCfg;
+import saul.orc.app.orc.entity.RemoteFileResult;
+import saul.orc.app.orc.entity.ReturnImg;
+import saul.orc.app.orc.util.DownloadFileUtil;
+import saul.orc.app.orc.util.ExcelUtil;
 import saul.orc.app.orc.util.Result;
 import saul.orc.app.orc.util.ResultCode;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * 获取网络图片,并且进行识别
@@ -23,6 +32,12 @@ import java.util.Map;
 public class UrlImageFinder {
     @Autowired
     private OrcPropertiesCfg cfg;
+    @Autowired
+    private OrcFileCfg orcFileCfg;
+    @Autowired
+    private DownloadFileUtil downloadFileUtil;
+    @Autowired
+    private ExcelUtil excelUtil;
 
 
     /**
@@ -66,9 +81,31 @@ public class UrlImageFinder {
         return this.client().basicGeneral(file, this.options()).toString(2);
     }
 
-    public String getTableRes3(String file) {
-        JSONObject jsonres = client().tableRecognizeToExcelUrl(file, 20000);
-        System.out.println(jsonres.toString(2));
+    /**
+     * 处理表格文件识别
+     *
+     * @param file 本地表格文件
+     * @return
+     */
+    public String getTableRes(String file) {
+        try {
+            //调用接口进行文件中的文本识别
+            JSONObject jsonres = client().tableRecognizeToExcelUrl(file, 20000);
+            RemoteFileResult remoteFileResult = JSON.parseObject(jsonres.toString(2), RemoteFileResult.class);
+            //判断是否识别完成
+            if (remoteFileResult != null && Strings.isNotEmpty(remoteFileResult.getResult().getResult_data())) {
+                //下载文件到本地
+                String fileName = UUID.randomUUID().toString().replaceAll("-", "");
+                String fileNameDW = downloadFileUtil.downRemoteFile(remoteFileResult.getResult().getResult_data(), fileName + ExcelTypeEnum.XLS.getValue(), orcFileCfg.getPath());
+                //解析Excel,提取Body-Sheet里面数据,并生成新的Excel
+                List<List<String>> lists = excelUtil.readExcel(fileNameDW, orcFileCfg.getKeepsheet());
+                //生成新的Excel
+                String newFile = orcFileCfg.getPath() + fileName + "_new";
+                excelUtil.writeExcel(lists, newFile + ExcelTypeEnum.XLSX.getValue());
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

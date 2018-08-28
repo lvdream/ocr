@@ -5,11 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import saul.orc.app.orc.ReturnImg;
+import saul.orc.app.orc.entity.ReturnImg;
 import saul.orc.app.orc.config.OrcFileCfg;
 import saul.orc.app.orc.image.UrlImageFinder;
-import saul.orc.app.orc.rest.util.Result;
-import saul.orc.app.orc.rest.util.ResultCode;
+import saul.orc.app.orc.util.Result;
+import saul.orc.app.orc.util.ResultCode;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

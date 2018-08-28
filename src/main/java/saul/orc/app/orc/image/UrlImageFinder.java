@@ -4,12 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.baidu.aip.ocr.AipOcr;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import saul.orc.app.orc.ReturnImg;
+import saul.orc.app.orc.entity.ReturnImg;
 import saul.orc.app.orc.config.OrcPropertiesCfg;
-import saul.orc.app.orc.rest.util.Result;
-import saul.orc.app.orc.rest.util.ResultCode;
+import saul.orc.app.orc.util.Result;
+import saul.orc.app.orc.util.ResultCode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,6 +64,12 @@ public class UrlImageFinder {
      */
     public String resultLocal(String file) {
         return this.client().basicGeneral(file, this.options()).toString(2);
+    }
+
+    public String getTableRes3(String file) {
+        JSONObject jsonres = client().tableRecognizeToExcelUrl(file, 20000);
+        System.out.println(jsonres.toString(2));
+        return null;
     }
 
     /**

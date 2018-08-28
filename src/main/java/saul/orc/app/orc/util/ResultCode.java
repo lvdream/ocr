@@ -1,4 +1,4 @@
-package saul.orc.app.orc.rest.util;
+package saul.orc.app.orc.util;
 
 public enum ResultCode {
 

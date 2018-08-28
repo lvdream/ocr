@@ -1,4 +1,4 @@
-package saul.orc.app.orc.rest.util;
+package saul.orc.app.orc.util;
 
 import com.alibaba.fastjson.JSON;
 import lombok.Data;

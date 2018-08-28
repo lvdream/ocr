@@ -1,4 +1,4 @@
-package saul.orc.app.orc;
+package saul.orc.app.orc.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

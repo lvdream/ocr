@@ -104,7 +104,8 @@ public class UrlImageFinder {
                 String newFile = orcFileCfg.getPath() + fileName + "_new";
                 ReturnImg r = ReturnImg.builder().build();
                 excelUtil.writeExcel(lists, newFile + ExcelTypeEnum.XLSX.getValue());
-                r.setReturnstr(newFile + ExcelTypeEnum.XLSX.getValue());
+                r.setReturnstr(fileName + "_new" + ExcelTypeEnum.XLSX.getValue());
+                return r;
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

@@ -19,8 +19,6 @@ import saul.orc.app.orc.image.UrlImageFinder;
 import java.io.*;
 import java.util.List;
 
-import static org.apache.tomcat.util.file.ConfigFileLoader.getInputStream;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Slf4j
@@ -28,7 +26,7 @@ public class OrcApplicationTests {
     @Autowired
     private UrlImageFinder finder;
 
-        @Test
+//        @Test
     public void contextLoads() {
 //        ReturnImg returnImg = finder.resultURL("http://wx1.sinaimg.cn/large/71adc809gy1fucxexah6dj20qo1bfq9f.jpg");
 //        finder.getTableImg("/Users/Saul/Downloads/1-1P42609351V56.png");
@@ -56,12 +54,12 @@ public class OrcApplicationTests {
         }
     }
 
-//    @Test
+    @Test
     public void testExcel2003WithReflectModel() throws FileNotFoundException {
         InputStream inputStream = null;
         List<List<String>> list = Lists.newArrayList();
         try {
-            inputStream = getInputStream("/Users/Saul/Downloads/BA7BCDF4A1674B36B7C2D151729B798F.xls");
+            inputStream = new FileInputStream("/Users/Saul/Desktop/e42334c41c954988b75e07808344a136.xls");
         } catch (IOException e) {
             e.printStackTrace();
         }

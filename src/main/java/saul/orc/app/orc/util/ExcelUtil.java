@@ -14,8 +14,6 @@ import saul.orc.app.orc.config.OrcFileCfg;
 import java.io.*;
 import java.util.List;
 
-import static org.apache.tomcat.util.file.ConfigFileLoader.getInputStream;
-
 /**
  * Excel 操作类
  */
@@ -34,7 +32,7 @@ public class ExcelUtil {
         InputStream inputStream = null;
         List<List<String>> list = Lists.newArrayList();
         try {
-            inputStream = getInputStream(excelPath);
+            inputStream = new FileInputStream(excelPath);
         } catch (IOException e) {
             e.printStackTrace();
         }

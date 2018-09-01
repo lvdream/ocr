@@ -47,8 +47,10 @@ public class ReceivingPictureRest {
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdirs();
         }
+
         try {
             file.transferTo(dest);
+            log.info("文件上传成功:" + dest.getPath());
             //文件识别类型,0:Excel,1:Text
             if (StringUtils.equalsIgnoreCase(request.getParameter("type"), "0")) {
                 ReturnImg img = finder.getTableRes(cfg.getPath() + fileName);

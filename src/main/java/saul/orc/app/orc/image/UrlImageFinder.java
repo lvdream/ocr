@@ -87,7 +87,8 @@ public class UrlImageFinder {
      * @param file 本地表格文件
      * @return
      */
-    public String getTableRes(String file) {
+    public ReturnImg getTableRes(String file) {
+        ReturnImg returnImg = null;
         try {
             //调用接口进行文件中的文本识别
             JSONObject jsonres = client().tableRecognizeToExcelUrl(file, 20000);
@@ -101,12 +102,14 @@ public class UrlImageFinder {
                 List<List<String>> lists = excelUtil.readExcel(fileNameDW, orcFileCfg.getKeepsheet());
                 //生成新的Excel
                 String newFile = orcFileCfg.getPath() + fileName + "_new";
+                ReturnImg r = ReturnImg.builder().build();
                 excelUtil.writeExcel(lists, newFile + ExcelTypeEnum.XLSX.getValue());
+                r.setReturnstr(newFile + ExcelTypeEnum.XLSX.getValue());
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return null;
+        return returnImg;
     }
 
     /**

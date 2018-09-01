@@ -1,12 +1,13 @@
 package saul.orc.app.orc.rest;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import saul.orc.app.orc.entity.ReturnImg;
 import saul.orc.app.orc.config.OrcFileCfg;
+import saul.orc.app.orc.entity.ReturnImg;
 import saul.orc.app.orc.image.UrlImageFinder;
 import saul.orc.app.orc.util.Result;
 import saul.orc.app.orc.util.ResultCode;
@@ -28,7 +29,7 @@ public class ReceivingPictureRest {
     // 文件上传
     @PostMapping(value = "/upload")
     @ResponseBody
-    public Result upload(MultipartFile file) {
+    public Result upload(MultipartFile file, HttpServletRequest request) {
         if (file == null || file.isEmpty()) {
             return Result.failure(ResultCode.PARAM_FILE_IS_BLANK);
         }
@@ -48,8 +49,14 @@ public class ReceivingPictureRest {
         }
         try {
             file.transferTo(dest);
-            ReturnImg img = finder.resultURL(cfg.getPath() + fileName);
-            return Result.success(img);
+            //文件识别类型,0:Excel,1:Text
+            if (StringUtils.equalsIgnoreCase(request.getParameter("type"), "0")) {
+                ReturnImg img = finder.getTableRes(cfg.getPath() + fileName);
+                return Result.success(img);
+            } else if (StringUtils.equalsIgnoreCase(request.getParameter("type"), "1")) {
+                ReturnImg img = finder.resultURL(cfg.getPath() + fileName);
+                return Result.success(img);
+            }
         } catch (IllegalStateException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -62,8 +69,8 @@ public class ReceivingPictureRest {
     @RequestMapping("/download")
     public String downloadFile(HttpServletRequest request,
                                HttpServletResponse response) {
-        String fileName = "FileUploadTests.java";
-        String realPath = request.getServletContext().getRealPath("//WEB-INF//");
+        String fileName = request.getParameter("file");
+        String realPath = cfg.getPath();
         File file = new File(realPath, fileName);
         if (file.exists()) {
             response.setContentType("application/force-download");// 设置强制下载不打开

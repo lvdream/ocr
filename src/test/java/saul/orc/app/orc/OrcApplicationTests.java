@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import saul.orc.app.orc.entity.ReturnImg;
 import saul.orc.app.orc.excel.ExcelReaderFactory;
 import saul.orc.app.orc.image.UrlImageFinder;
 
@@ -26,12 +27,13 @@ public class OrcApplicationTests {
     @Autowired
     private UrlImageFinder finder;
 
-//        @Test
+    @Test
     public void contextLoads() {
 //        ReturnImg returnImg = finder.resultURL("http://wx1.sinaimg.cn/large/71adc809gy1fucxexah6dj20qo1bfq9f.jpg");
 //        finder.getTableImg("/Users/Saul/Downloads/1-1P42609351V56.png");
 //        finder.getTableRes("11663730_437292");
-        finder.getTableRes("/Users/Saul/Desktop/11.png");
+        ReturnImg returnImg = finder.getTableRes("/Users/Saul/Desktop/IMG_1006.jpg");
+        System.out.println(returnImg);
     }
 
     //    @Test
@@ -54,7 +56,7 @@ public class OrcApplicationTests {
         }
     }
 
-    @Test
+//    @Test
     public void testExcel2003WithReflectModel() throws FileNotFoundException {
         InputStream inputStream = null;
         List<List<String>> list = Lists.newArrayList();

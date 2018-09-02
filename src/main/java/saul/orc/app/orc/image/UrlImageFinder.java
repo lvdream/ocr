@@ -93,8 +93,15 @@ public class UrlImageFinder {
             //调用接口进行文件中的文本识别
             JSONObject jsonres = client().tableRecognizeToExcelUrl(file, 20000);
             RemoteFileResult remoteFileResult = JSON.parseObject(jsonres.toString(2), RemoteFileResult.class);
+            if (remoteFileResult != null && Strings.isNotEmpty(remoteFileResult.getError_code())) {
+                returnImg = ReturnImg.builder().build();
+                returnImg.setError_msg(remoteFileResult.getError_msg());
+                returnImg.setError_code(remoteFileResult.getError_code());
+                return returnImg;
+            }
             //判断是否识别完成
-            if (remoteFileResult != null && Strings.isNotEmpty(remoteFileResult.getResult().getResult_data())) {
+            if (remoteFileResult != null && null == remoteFileResult.getError_code() &&
+                    Strings.isNotEmpty(remoteFileResult.getResult().getResult_data())) {
                 //下载文件到本地
                 String fileName = UUID.randomUUID().toString().replaceAll("-", "");
                 String fileNameDW = downloadFileUtil.downRemoteFile(remoteFileResult.getResult().getResult_data(), fileName + ExcelTypeEnum.XLS.getValue(), orcFileCfg.getPath());
@@ -118,6 +125,7 @@ public class UrlImageFinder {
      *
      * @return client
      */
+
     private AipOcr client() {
         return new AipOcr(cfg.getAppid(), cfg.getApikey(), cfg.getSecret());
     }

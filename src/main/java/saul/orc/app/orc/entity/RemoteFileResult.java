@@ -19,6 +19,8 @@ public class RemoteFileResult {
 
     private ResultBean result;
     private long log_id;
+    private String error_msg;
+    private String error_code;
 
     @Data
     public static class ResultBean {

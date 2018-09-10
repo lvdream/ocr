@@ -6,7 +6,15 @@ import com.alibaba.excel.metadata.Sheet;
 import com.alibaba.excel.read.context.AnalysisContext;
 import com.alibaba.excel.read.event.AnalysisEventListener;
 import com.alibaba.excel.support.ExcelTypeEnum;
+import com.alibaba.fastjson.JSONObject;
+import com.huawei.ais.common.AuthInfo;
+import com.huawei.ais.sdk.AisAccess;
+import com.huawei.ais.sdk.util.HttpClientUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.entity.StringEntity;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +26,7 @@ import saul.orc.app.orc.excel.ExcelReaderFactory;
 import saul.orc.app.orc.image.UrlImageFinder;
 
 import java.io.*;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -27,7 +36,7 @@ public class OrcApplicationTests {
     @Autowired
     private UrlImageFinder finder;
 
-    @Test
+    //    @Test
     public void contextLoads() {
 //        ReturnImg returnImg = finder.resultURL("http://wx1.sinaimg.cn/large/71adc809gy1fucxexah6dj20qo1bfq9f.jpg");
 //        finder.getTableImg("/Users/Saul/Downloads/1-1P42609351V56.png");
@@ -56,7 +65,7 @@ public class OrcApplicationTests {
         }
     }
 
-//    @Test
+    //    @Test
     public void testExcel2003WithReflectModel() throws FileNotFoundException {
         InputStream inputStream = null;
         List<List<String>> list = Lists.newArrayList();
@@ -114,4 +123,34 @@ public class OrcApplicationTests {
         }
 
     }
+
+    /**
+     * 华为测试
+     */
+    @Test
+    public void testHW() throws IOException {
+        AisAccess aisAccess = new AisAccess(new AuthInfo("https://ais.cn-north-1.myhuaweicloud.com",
+                "cn-north-1",  /* OCR服务的区域信息, 可以在上面的地址中查询 */
+                "OC9XMGIOQB7TQ8JDCDKR",    /* 请输入你的AK信息 */
+                "z6g7CuJ2MHWF3169TE02CyVw3eSVrSpMq9h867gc"));
+        try {
+            String uri = "/v1.0/ocr/general-table";
+            byte[] fileData = FileUtils.readFileToByteArray(new File("/Users/Saul/Desktop/11.png"));
+            String fileBase64Str = Base64.encodeBase64String(fileData);
+            JSONObject json = new JSONObject();
+            json.put("image", fileBase64Str+"2");
+            StringEntity stringEntity = new StringEntity(json.toString(), "utf-8");
+
+            HttpResponse response = aisAccess.post(uri, stringEntity);
+            System.out.println(response.getStatusLine().getStatusCode());
+            System.out.println(HttpClientUtils.convertStreamToString(response.getEntity().getContent()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (UnsupportedCharsetException e) {
+            e.printStackTrace();
+        } finally {
+            aisAccess.close();
+        }
+    }
+
 }

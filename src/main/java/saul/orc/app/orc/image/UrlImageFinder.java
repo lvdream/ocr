@@ -61,6 +61,7 @@ public class UrlImageFinder {
                 for (ReturnImg.WordsResultBean next : returnImg.getWords_result()) {
 //                    buffer.append(StringUtils.trim(next.getWords()));
                     buffer.append(next.getWords());
+                    buffer.append(StringUtils.LF);
                 }
                 ReturnImg r = ReturnImg.builder().build();
                 r.setReturnstr(buffer.toString());

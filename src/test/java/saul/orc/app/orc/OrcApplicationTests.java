@@ -6,27 +6,19 @@ import com.alibaba.excel.metadata.Sheet;
 import com.alibaba.excel.read.context.AnalysisContext;
 import com.alibaba.excel.read.event.AnalysisEventListener;
 import com.alibaba.excel.support.ExcelTypeEnum;
-import com.alibaba.fastjson.JSONObject;
-import com.huawei.ais.common.AuthInfo;
-import com.huawei.ais.sdk.AisAccess;
-import com.huawei.ais.sdk.util.HttpClientUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.FileUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.entity.StringEntity;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import saul.orc.app.orc.entity.ReturnImg;
 import saul.orc.app.orc.excel.ExcelReaderFactory;
+import saul.orc.app.orc.image.MpImageCodeHandle;
 import saul.orc.app.orc.image.UrlImageFinder;
+import saul.orc.app.orc.util.TransApi;
 
 import java.io.*;
-import java.nio.charset.UnsupportedCharsetException;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -35,14 +27,18 @@ import java.util.List;
 public class OrcApplicationTests {
     @Autowired
     private UrlImageFinder finder;
+    @Autowired
+    private MpImageCodeHandle handle;
+    @Autowired
+    private TransApi api;
 
-    //    @Test
+        @Test
     public void contextLoads() {
+
 //        ReturnImg returnImg = finder.resultURL("http://wx1.sinaimg.cn/large/71adc809gy1fucxexah6dj20qo1bfq9f.jpg");
 //        finder.getTableImg("/Users/Saul/Downloads/1-1P42609351V56.png");
 //        finder.getTableRes("11663730_437292");
-        ReturnImg returnImg = finder.getTableRes("/Users/Saul/Desktop/IMG_1006.jpg");
-        System.out.println(returnImg);
+        System.out.println(finder.resultURL("/Users/Saul/Desktop/IMG_1092.PNG"));
     }
 
     //    @Test
@@ -127,30 +123,15 @@ public class OrcApplicationTests {
     /**
      * 华为测试
      */
-    @Test
-    public void testHW() throws IOException {
-        AisAccess aisAccess = new AisAccess(new AuthInfo("https://ais.cn-north-1.myhuaweicloud.com",
-                "cn-north-1",  /* OCR服务的区域信息, 可以在上面的地址中查询 */
-                "OC9XMGIOQB7TQ8JDCDKR",    /* 请输入你的AK信息 */
-                "z6g7CuJ2MHWF3169TE02CyVw3eSVrSpMq9h867gc"));
-        try {
-            String uri = "/v1.0/ocr/general-table";
-            byte[] fileData = FileUtils.readFileToByteArray(new File("/Users/Saul/Desktop/11.png"));
-            String fileBase64Str = Base64.encodeBase64String(fileData);
-            JSONObject json = new JSONObject();
-            json.put("image", fileBase64Str+"2");
-            StringEntity stringEntity = new StringEntity(json.toString(), "utf-8");
+//    @Test
 
-            HttpResponse response = aisAccess.post(uri, stringEntity);
-            System.out.println(response.getStatusLine().getStatusCode());
-            System.out.println(HttpClientUtils.convertStreamToString(response.getEntity().getContent()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (UnsupportedCharsetException e) {
-            e.printStackTrace();
-        } finally {
-            aisAccess.close();
-        }
+    //    @Test
+    public void testMP() throws IOException {
+        handle.getQRimg(handle.getToken());
     }
 
+//    @Test
+    public void testTranslate() throws UnsupportedEncodingException {
+        System.out.println(api.getTransResult("我写了上千篇反对极端宗教和所谓自贱维稳的帖子。但我绝不是对维吾尔族人深仇大恨。不然也不会赞助这个。作为新疆人，还是希望新疆能平平安安。给陈书记点赞"));
+    }
 }

@@ -28,10 +28,22 @@ public class TextRestController {
     public Result translate(String qStr) throws UnsupportedEncodingException {
         if (StringUtils.isNotEmpty(qStr)) {
             try {
-                String rStr = api.getTransResult(qStr);
-                if (StringUtils.isNotEmpty(rStr)) {
-                    return Result.success(rStr);
+                if (StringUtils.containsAny(qStr, StringUtils.LF)) {
+                    String[] aStr = StringUtils.split(qStr,StringUtils.LF);
+                    StringBuffer stringBuffer = new StringBuffer();
+                    for (int i = 0; i < aStr.length; i++) {
+                        String s = aStr[i];
+                        stringBuffer.append(api.getTransResult(aStr[i])) ;
+                        stringBuffer.append(StringUtils.LF) ;
+                    }
+                    return  Result.success(stringBuffer.toString());
+                } else {
+                    String rStr = api.getTransResult(qStr);
+                    if (StringUtils.isNotEmpty(rStr)) {
+                        return Result.success(rStr);
+                    }
                 }
+
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }

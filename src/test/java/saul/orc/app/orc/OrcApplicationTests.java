@@ -130,7 +130,7 @@ public class OrcApplicationTests {
         handle.getQRimg(handle.getToken());
     }
 
-//    @Test
+    @Test
     public void testTranslate() throws UnsupportedEncodingException {
         System.out.println(api.getTransResult("我写了上千篇反对极端宗教和所谓自贱维稳的帖子。但我绝不是对维吾尔族人深仇大恨。不然也不会赞助这个。作为新疆人，还是希望新疆能平平安安。给陈书记点赞"));
     }

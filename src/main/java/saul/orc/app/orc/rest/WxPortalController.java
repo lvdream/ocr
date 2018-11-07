@@ -5,15 +5,26 @@ import cn.binarywang.wx.miniapp.bean.WxMaMessage;
 import cn.binarywang.wx.miniapp.constant.WxMaConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import saul.orc.app.orc.config.WxMaConfiguration;
+import saul.orc.app.orc.entity.MstbUserEntity;
+import saul.orc.app.orc.entity.TstbUserContentEntity;
+import saul.orc.app.orc.repos.UserContentRepos;
+import saul.orc.app.orc.repos.UserRepos;
 
+import java.util.Date;
 import java.util.Objects;
 
 @RestController
 @Slf4j
 @RequestMapping("/wx/portal/{appid}")
 public class WxPortalController {
+    @Autowired
+    private UserRepos userRepos;
+    @Autowired
+    private UserContentRepos contentRepos;
     @GetMapping(produces = "text/plain;charset=utf-8")
     public String authGet(@PathVariable String appid,
                           @RequestParam(name = "signature", required = false) String signature,
@@ -57,12 +68,27 @@ public class WxPortalController {
 
         final boolean isJson = Objects.equals(wxService.getWxMaConfig().getMsgDataFormat(),
                 WxMaConstants.MsgDataFormat.JSON);
+        String str = "您的留言,已经收到,谢谢您的支持!";
+        MstbUserEntity userEntity = new MstbUserEntity();
+
+        userEntity.setMuCode(WxMaMessage.fromJson(requestBody).getFromUser());
+        userEntity.setMuCreatetime(DateFormatUtils.format(new Date(),"yyyy-MM-dd"));
+        userEntity.setMuUpdatetime(DateFormatUtils.format(new Date(),"yyyy-MM-dd"));
+        userRepos.save(userEntity);
+        TstbUserContentEntity tstbUserContentEntity = new TstbUserContentEntity();
+        tstbUserContentEntity.setMuId(userEntity.getMuId());
+        tstbUserContentEntity.setTucContent(WxMaMessage.fromJson(requestBody).getContent());
+        tstbUserContentEntity.setTucReply(str);
+        tstbUserContentEntity.setTucCreatetime(DateFormatUtils.format(new Date(),"yyyy-MM-dd"));
+        contentRepos.save(tstbUserContentEntity);
         // 明文传输的消息
         WxMaMessage inMessage;
         if (isJson) {
-            inMessage = WxMaMessage.fromJson(requestBody);
+//            inMessage = WxMaMessage.fromJson(requestBody);
+            inMessage = WxMaMessage.fromJson(str);
         } else {//xml
-            inMessage = WxMaMessage.fromXml(requestBody);
+//            inMessage = WxMaMessage.fromXml(requestBody);
+            inMessage = WxMaMessage.fromXml(str);
         }
 
         this.route(inMessage, appid);

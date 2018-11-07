@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSON;
 import com.baidu.aip.ocr.AipOcr;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.util.Strings;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -95,7 +94,7 @@ public class UrlImageFinder {
             //调用接口进行文件中的文本识别
             JSONObject jsonres = client().tableRecognizeToExcelUrl(file, 20000);
             RemoteFileResult remoteFileResult = JSON.parseObject(jsonres.toString(2), RemoteFileResult.class);
-            if (remoteFileResult != null && Strings.isNotEmpty(remoteFileResult.getError_code())) {
+            if (remoteFileResult != null && StringUtils.isNotEmpty(remoteFileResult.getError_code())) {
                 returnImg = ReturnImg.builder().build();
                 returnImg.setError_msg(remoteFileResult.getError_msg());
                 returnImg.setError_code(remoteFileResult.getError_code());
@@ -103,7 +102,7 @@ public class UrlImageFinder {
             }
             //判断是否识别完成
             if (remoteFileResult != null && null == remoteFileResult.getError_code() &&
-                    Strings.isNotEmpty(remoteFileResult.getResult().getResult_data())) {
+                    StringUtils.isNotEmpty(remoteFileResult.getResult().getResult_data())) {
                 //下载文件到本地
                 String fileName = UUID.randomUUID().toString().replaceAll("-", "");
                 String fileNameDW = downloadFileUtil.downRemoteFile(remoteFileResult.getResult().getResult_data(), fileName + ExcelTypeEnum.XLS.getValue(), orcFileCfg.getPath());

@@ -1,0 +1,147 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 8MB
+      max-request-size: 8MB
+  flyway:
+    baseline-on-migrate: true
+    enabled: true
+    encoding: utf-8
+  jmx:
+    enabled: false
+  profiles:
+    active: msg
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        format_sql: true
+        naming:
+          physical-strategy: org.hibernate.cfg.EJB3NamingStrategy
+  datasource:
+#    url: jdbc:mysql://127.0.0.1:13306/xbkb_main?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://132.232.76.112:13306/xbkb_main?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: i4uf2beqMD
+    driver-class-name: com.mysql.jdbc.Driver
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 15
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: DatebookHikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+#微信小程序相关设置
+wx:
+  miniapp:
+    configs:
+        - appid: wxab56c5ede98eec5b
+          secret: 1a2b8de8eed69aa51b69812b96f7087b
+          token: xiaobei
+          aesKey: XfINVik3kVVYDn9Gyg1WJA2ywgZmfEPys95UhS8MeOG
+          msgDataFormat: JSON
+common:
+  ocr:
+    baidu:
+      appid: 11663730
+      apikey: 8sqX8bWOAe0yPNLx4nqhySsy
+      secret: 5qPW8QGbRG9luoRSYATmzszLqR6SU6cN
+      language_type: CHN_ENG # 识别语言类型
+      detect_direction: true # 是否检测图像朝向
+      detect_language: true # 测试
+      probability: true
+      error:
+        - name: SDK100
+          value: image size error
+        - name: SDK101
+          value: image length error
+        - name: SDK102
+          value: read image file error
+        - name: SDK108
+          value: connection or read data time out
+        - name: SDK109
+          value: unsupported image format
+        - name: 4
+          value: Open api request limit reached
+        - name: 14
+          value: IAM Certification failed
+        - name: 17
+          value: Open api daily request limit reached
+        - name: 18
+          value: Open api qps request limit reached
+        - name: 19
+          value: Open api total request limit reached
+        - name: 100
+          value: Invalid parameter
+        - name: 110
+          value: Access token invalid or no longer valid
+        - name: 111
+          value: Access token expired
+        - name: 282000
+          value: internal error
+        - name: 216100
+          value: invalid param
+        - name: 216101
+          value: not enough param
+        - name: 216102
+          value: service not support
+        - name: 216103
+          value: param too long
+        - name: 216110
+          value: appid not exist
+        - name: 216200
+          value: empty image
+        - name: 216201
+          value: image format error
+        - name: 216202
+          value: image size error
+        - name: 216630
+          value: recognize error
+        - name: 216631
+          value: recognize bank card error
+        - name: 216633
+          value: recognize idcard error
+        - name: 216634
+          value: detect error
+        - name: 282003
+          value: missing parameters
+        - name: 282005
+          value: batch processing error
+        - name: 282006
+          value: batch task limit reached
+        - name: 282110
+          value: urls not exit
+        - name: 282111
+          value: url format illegal
+        - name: 282112
+          value: url download timeout
+        - name: 282113
+          value: url response invalid
+        - name: 282114
+          value: url size error
+        - name: 282005
+          value: batch processing error
+        - name: 282808
+          value: request id
+        - name: 282809
+          value: result type error
+        - name: 282810
+          value: image recognize error
+    file:
+      path: /tmp/orc/upload/
+      keep: 1
+      outsheet: 识别结果
+      keepsheet: body
+    huawei:
+      endpoint: https://ais.cn-north-1.myhuaweicloud.com #远程解析地址
+      region: cn-north-1 #OCR服务的区域信息
+      uri: /v1.0/ocr/general-table #OCR服务的区域信息
+      ak: OC9XMGIOQB7TQ8JDCDKR
+      sk: z6g7CuJ2MHWF3169TE02CyVw3eSVrSpMq9h867gc
+    translate: #百度翻译
+      appid: 20180911000205610
+      appsec: v7mGs5u8t0rcYOmzJkwp
+      url: http://api.fanyi.baidu.com/api/trans/vip/translate

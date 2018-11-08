@@ -34,8 +34,10 @@ public class WxMaConfiguration {
                     .build());
 
     private final WxMaMessageHandler logHandler = (wxMessage, context, service, sessionManager) -> {
-        
-        service.getMsgService().sendKefuMsg(WxMaKefuMessage.newTextBuilder().content("收到信息为：" + wxMessage.toJson())
+
+//        service.getMsgService().sendKefuMsg(WxMaKefuMessage.newTextBuilder().content("收到信息为：" + wxMessage.getContent())
+//                .toUser(wxMessage.getFromUser()).build());
+        service.getMsgService().sendKefuMsg(WxMaKefuMessage.newTextBuilder().content(wxMessage.getContent())
                 .toUser(wxMessage.getFromUser()).build());
     };
 

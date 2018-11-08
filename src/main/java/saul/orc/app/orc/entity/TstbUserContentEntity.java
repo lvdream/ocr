@@ -10,6 +10,7 @@ import java.util.Objects;
 @Table(name = "tstb_user_content", schema = "xbkb_main", catalog = "")
 public class TstbUserContentEntity {
     @Id@Column(name = "tuc_ic")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int tucIc;
     @Basic@Column(name = "mu_id")
     private Integer muId;

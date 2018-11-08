@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX mstb_user_mu_code_uindex ON mstb_user (mu_code);

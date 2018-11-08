@@ -70,16 +70,20 @@ public class WxPortalController {
                 WxMaConstants.MsgDataFormat.JSON);
         String str = "您的留言,已经收到,谢谢您的支持!";
         MstbUserEntity userEntity = new MstbUserEntity();
-
-        userEntity.setMuCode(WxMaMessage.fromJson(requestBody).getFromUser());
-        userEntity.setMuCreatetime(DateFormatUtils.format(new Date(),"yyyy-MM-dd"));
-        userEntity.setMuUpdatetime(DateFormatUtils.format(new Date(),"yyyy-MM-dd"));
-        userRepos.save(userEntity);
+        userEntity.setMuCode(WxMaMessage.fromXml(requestBody).getFromUser());
+        userEntity.setMuCreatetime(DateFormatUtils.format(new Date(),"yyyy-MM-dd HH:mm:dd"));
+        try {
+            userRepos.save(userEntity);
+        } catch (Exception e) {
+            userEntity = userRepos.findMstbUserEntityByMuCodeEquals(userEntity.getMuCode());
+            userEntity.setMuUpdatetime(DateFormatUtils.format(new Date(),"yyyy-MM-dd HH:mm:dd"));
+            userRepos.save(userEntity);
+        }
         TstbUserContentEntity tstbUserContentEntity = new TstbUserContentEntity();
         tstbUserContentEntity.setMuId(userEntity.getMuId());
-        tstbUserContentEntity.setTucContent(WxMaMessage.fromJson(requestBody).getContent());
+        tstbUserContentEntity.setTucContent(WxMaMessage.fromXml(requestBody).getContent());
         tstbUserContentEntity.setTucReply(str);
-        tstbUserContentEntity.setTucCreatetime(DateFormatUtils.format(new Date(),"yyyy-MM-dd"));
+        tstbUserContentEntity.setTucCreatetime(DateFormatUtils.format(new Date(),"yyyy-MM-dd HH:mm:dd"));
         contentRepos.save(tstbUserContentEntity);
         // 明文传输的消息
         WxMaMessage inMessage;
@@ -88,7 +92,8 @@ public class WxPortalController {
             inMessage = WxMaMessage.fromJson(str);
         } else {//xml
 //            inMessage = WxMaMessage.fromXml(requestBody);
-            inMessage = WxMaMessage.fromXml(str);
+            inMessage = WxMaMessage.fromXml(requestBody);
+            inMessage.setContent(str);
         }
 
         this.route(inMessage, appid);

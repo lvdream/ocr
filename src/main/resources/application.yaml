@@ -20,8 +20,8 @@ spring:
         naming:
           physical-strategy: org.hibernate.cfg.EJB3NamingStrategy
   datasource:
-#    url: jdbc:mysql://127.0.0.1:13306/xbkb_main?useUnicode=true&characterEncoding=utf8
-    url: jdbc:mysql://132.232.76.112:13306/xbkb_main?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://127.0.0.1:13306/xbkb_main?useUnicode=true&characterEncoding=utf8
+#    url: jdbc:mysql://132.232.76.112:13306/xbkb_main?useUnicode=true&characterEncoding=utf8
     username: root
     password: i4uf2beqMD
     driver-class-name: com.mysql.jdbc.Driver
